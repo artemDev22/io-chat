@@ -6,7 +6,8 @@ import {
 } from 'redux';
 import thunk from 'redux-thunk';
 import LocalStorageMiddleware from "../middlewares/localStorageMiddleware";
-import authorizationReducer from "../reducers/userReducers";
+import {authorizationReducer} from "../reducers/userReducers";
+import {userReducer} from "../reducers/userReducers";
 
 
 const composeEnhancers = typeof window === 'object'
@@ -19,6 +20,7 @@ const middleware = applyMiddleware(thunk, LocalStorageMiddleware);
 
 const rootReducer = combineReducers({
     auth: authorizationReducer,
+    userReducer,
     // messages: getMessagesReducer,
     // newMessage: addMessageReducer,
 });
@@ -30,7 +32,6 @@ const initialState = {
 const getInitialState = () => {
     if (sessionStorage.getItem('sessionData')) {
         const session = JSON.parse(sessionStorage.getItem('sessionData'));
-        console.log(session)
         if (Object.keys(session).length !== 0) {
             initialState.auth = {
                 name: session.name,

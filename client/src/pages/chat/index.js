@@ -1,22 +1,38 @@
 import {MessageList} from "./components/MessageList";
 import {useChat} from "../../hooks/useChat";
 import {MessageForm} from "./components/MessageForm";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Container} from "react-bootstrap";
+import {useEffect} from "react";
+import {getUser} from "../../actions/userActions";
 
 
 const Chat = ({history}) => {
-    const roomId = "free"
+    const dispatch = useDispatch()
     const { name } = useSelector(state => state.auth)
-    if (!name) {
-        history.push("/login")
-    }
-    const {removeMessage, messages, sendMessage, editMessage} = useChat(roomId)
+
+    const { user, loading, error } = useSelector(state => state.userReducer)
+    useEffect(() => {
+        if (!name) {
+            history.push("/login")
+        }
+        dispatch(getUser(name))
+    }, [name])
+    console.log(error)
+    console.log(loading)
+    const roomId = "free"
+    const { removeMessage, messages, sendMessage, toggleLike } = useChat(roomId, user)
     return (
         <Container>
             <h2 className='text-center'>Room: {roomId}</h2>
-            <MessageList messages={messages} removeMessage={removeMessage} />
-            <MessageForm username={name} sendMessage={sendMessage} />
+            {loading ? <div>hello</div> :
+                error ? <div>error</div> :
+                <>
+                    <MessageList messages={messages} removeMessage={removeMessage} toggleLike={toggleLike} user={user} />
+                    <MessageForm user={user} sendMessage={sendMessage} />
+                </>
+            }
+
         </Container>
     )
 }

@@ -9,7 +9,6 @@ import Chat from "./pages/chat";
 import PrivateRoute from "./components/PrivateRoute";
 import { createGlobalStyle } from 'styled-components'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import 'emoji-mart/css/emoji-mart.css'
 import {Container} from "react-bootstrap";
 
 const App = () => {

@@ -3,21 +3,21 @@ import io from "socket.io-client";
 import {Button, Form} from "react-bootstrap";
 import {loginName} from "../../actions/userActions";
 import {useDispatch} from "react-redux";
+import {SERVER_URL} from "../../constants/apiUrl";
 
 
 
 const Login = ({history}) => {
     const [name, setName] = useState('')
     const socketRef = useRef(null)
-    const SERVER_URL = 'http://localhost:3001'
     const dispatch = useDispatch()
     useEffect(() => {
         socketRef.current = io(SERVER_URL)
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        dispatch(loginName(name))
+        await dispatch(loginName(name))
         history.push("/chat")
     }
 

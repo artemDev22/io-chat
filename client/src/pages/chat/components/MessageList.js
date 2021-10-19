@@ -9,7 +9,7 @@ const listStyles = {
     overflow: 'auto'
 }
 
-export const MessageList = ({ messages, removeMessage }) => {
+export const MessageList = ({ messages, removeMessage, user, toggleLike }) => {
     const messagesEndRef = useRef(null)
 
     useEffect(() => {
@@ -25,6 +25,8 @@ export const MessageList = ({ messages, removeMessage }) => {
                         key={msg._id}
                         message={msg}
                         removeMessage={removeMessage}
+                        user={user}
+                        toggleLike={toggleLike}
                     />
                 ))}
                 <span ref={messagesEndRef}></span>

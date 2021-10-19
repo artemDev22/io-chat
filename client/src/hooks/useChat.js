@@ -1,44 +1,44 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSelector } from 'react'
 import io from 'socket.io-client'
-import {useSelector} from "react-redux";
 import {SERVER_URL} from "../constants/apiUrl";
 
-export const useChat = (roomId) => {
+export const useChat = (roomId, user) => {
     const [messages, setMessages] = useState([])
-
-    const { name } = useSelector(state => state.auth)
-
     const socketRef = useRef(null)
 
     useEffect(() => {
+
         socketRef.current = io(SERVER_URL)
 
         socketRef.current.emit('message:get')
 
         socketRef.current.on('messages', (messages) => {
             const newMessages = messages.map((msg) =>
-                msg.name === name ? { ...msg, currentUser: true } : msg
+                msg.name === user.name ? { ...msg, currentUser: true } : checkLiked(msg)
             )
-            // обновляем массив сообщений
+            console.log(messages)
             setMessages(newMessages)
         })
 
         return () => {
             socketRef.current.disconnect()
         }
-    }, [roomId, name])
+    }, [roomId, user])
 
-    // функция отправки сообщения
-    // принимает объект с текстом сообщения и именем отправителя
+    const checkLiked = (msg) => {
+        const existedLike = msg.likes.filter(like => user._id === like).length;
+        if (existedLike) {
+            return {...msg, liked: true}
+        }
+        return msg;
+    }
     const sendMessage = ({ text, name }) => {
-        // добавляем в объект id пользователя при отправке на сервер
         socketRef.current.emit('message:add', {
             text,
             name,
         })
     }
     const editMessage = ({text, name, likes}) => {
-        // добавляем в объект id пользователя при отправке на сервер
         socketRef.current.emit('message:edit', {
             text,
             name,
@@ -47,9 +47,12 @@ export const useChat = (roomId) => {
     }
 
     const removeMessage = (messageId) => {
-        console.log('here')
         socketRef.current.emit('message:remove', messageId)
     }
 
-    return { messages, sendMessage, removeMessage, editMessage }
+    const toggleLike = (data) => {
+        socketRef.current.emit('message:like', data)
+    }
+
+    return { user, messages, sendMessage, removeMessage, editMessage, toggleLike }
 }

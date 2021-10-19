@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { Form, Button } from 'react-bootstrap'
 
-export const MessageForm = ({ username, sendMessage }) => {
+export const MessageForm = ({ user, sendMessage }) => {
 
     const [text, setText] = useState('')
 
@@ -14,8 +14,7 @@ export const MessageForm = ({ username, sendMessage }) => {
         e.preventDefault()
         const trimmed = text.trim()
         if (trimmed) {
-            console.log({ text: text, name: username })
-            sendMessage({ text: text, name: username })
+            sendMessage({ text: text, name: user.name })
             setText('')
         }
     }
