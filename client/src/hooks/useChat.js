@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useSelector } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import io from 'socket.io-client'
 import {SERVER_URL} from "../constants/apiUrl";
 

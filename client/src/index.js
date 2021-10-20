@@ -13,7 +13,7 @@ import {Container} from "react-bootstrap";
 
 const App = () => {
     return (
-        <div className="App">
+    <div className="App">
         <Provider store={store}>
             <Container style={{ maxWidth: '512px' }}>
                 <h1 className='mt-2 text-center'>React Chat App</h1>

@@ -1,6 +1,6 @@
-const UserModel = require("../../db/models/user");
+import {UserModel} from "../db/models/user";
 
-const createUser = async (req, res) => {
+export const createUser = async (req: any, res: any) => {
     try {
         const existedUser = await UserModel.findOne({
             name: req.body.name,
@@ -22,13 +22,12 @@ const createUser = async (req, res) => {
     }
 }
 
-const getUser = async (req, res) => {
+export const getUser = async (req:any, res: any) => {
     try {
         const name = req.params.name
         const existedUser = await UserModel.findOne({
             name
         })
-        console.log(existedUser)
         if (!existedUser) {
             return res.status(404).send("user not exist")
         }
@@ -38,8 +37,19 @@ const getUser = async (req, res) => {
     }
 }
 
-module.exports = {
-    createUser,
-    getUser,
+export const getUsers = async (req: any, res: any) => {
+    try {
+        const obj_ids = req.query.users;
+        const users = await UserModel.find({_id: {$in: obj_ids}});
+        if (!users.length) {
+            return res.status(404).send({
+                message: "users not found"
+            })
+        }
+        return res.status(200).send({
+            users
+        })
+    } catch (e) {
+        return res.status(500).send('Something broke!');
+    }
 }
-

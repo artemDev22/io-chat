@@ -1,29 +1,29 @@
-const MessageModel = require("../db/models/message");
+import {MessageModel} from "../db/models/message";
+import {Server, Socket} from "socket.io";
 
-const messageHandlers = (io, socket) => {
+export const messageHandlers = (io: Server, socket: Socket, roomId: string) => {
     const getMessages = async () => {
         const messages = await MessageModel.find({});
-        io.in(socket.roomId).emit('messages', messages)
+        io.in(roomId).emit('messages', messages)
     }
-    const addMessage = async (message) => {
+    const addMessage = async (message: any) => {
         await new MessageModel(message).save()
         await getMessages()
     }
 
-    const removeMessage = async (id) => {
+    const removeMessage = async (id: string) => {
         await MessageModel.remove({
             _id: id
         })
         await getMessages()
     }
 
-    const toggleLike = async (data) => {
+    const toggleLike = async (data: any) => {
         const message = await MessageModel.findOne({
             _id: data.id
         })
         const existedLike = message.likes.indexOf(data.user_id)
-        console.log(existedLike)
-        console.log(data)
+
         if (existedLike === -1) {
             message.likes.push(data.user_id)
             message.likes_count += 1
@@ -42,5 +42,3 @@ const messageHandlers = (io, socket) => {
     socket.on('message:remove', removeMessage)
     socket.on('message:like', toggleLike)
 }
-
-module.exports = messageHandlers;
