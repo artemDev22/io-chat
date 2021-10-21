@@ -1,4 +1,4 @@
-import {model} from "mongoose"
+import {model} from "mongoose";
 import {CommonSchema} from "./common";
 import {UserModel} from "./user";
 
@@ -12,4 +12,4 @@ const MessageSchema = CommonSchema({
     chat_id: {type: String, required: true},
 });
 
-export const MessageModel = model('Message', MessageSchema);
+export const MessageModel = model("Message", MessageSchema);

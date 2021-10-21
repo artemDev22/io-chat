@@ -6,8 +6,12 @@ import {
 } from 'redux';
 import thunk from 'redux-thunk';
 import LocalStorageMiddleware from "../middlewares/localStorageMiddleware";
-import {authorizationReducer} from "../reducers/userReducers";
-import {userReducer} from "../reducers/userReducers";
+import {
+    authorizationReducer,
+    usersReducer,
+    userReducer, usersByChatReducer
+} from "../reducers/userReducers";
+import {chatReducer} from "../reducers/chatReducer";
 
 
 const composeEnhancers = typeof window === 'object'
@@ -21,8 +25,9 @@ const middleware = applyMiddleware(thunk, LocalStorageMiddleware);
 const rootReducer = combineReducers({
     auth: authorizationReducer,
     userReducer,
-    // messages: getMessagesReducer,
-    // newMessage: addMessageReducer,
+    usersReducer,
+    chatReducer,
+    usersByChatReducer,
 });
 
 const initialState = {

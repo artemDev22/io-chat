@@ -1,15 +1,10 @@
-import { Accordion, Card, Button, Badge } from 'react-bootstrap'
-// иконка - индикатор статуса пользователя
+import { Accordion, Card, Button } from 'react-bootstrap'
 import { RiRadioButtonLine } from 'react-icons/ri'
 
-// компонент принимает объект с пользователями - нормализованную структуру
-export const UserList = ({ users }) => {
-    const usersArr = Object.entries(users)
-
-    const activeUsers = Object.values(users)
-
-        .filter((u) => u.online).length
-
+export const UserList = ({ users, createChat }) => {
+    const onClickHandler = (user) => {
+        createChat(user)
+    }
     return (
         <Accordion className='mt-4'>
             <Card>
@@ -20,22 +15,22 @@ export const UserList = ({ users }) => {
                         eventKey='0'
                         style={{ textDecoration: 'none' }}
                     >
-                        Active users{' '}
-                        <Badge variant='light' className='ml-1'>
-                            {activeUsers}
-                        </Badge>
+                        {/*Active users{' '}*/}
+                        {/*<Badge variant='light' className='ml-1'>*/}
+                        {/*    {activeUsers}*/}
+                        {/*</Badge>*/}
                     </Accordion.Toggle>
                 </Card.Header>
-                {usersArr.map(([userId, obj]) => (
-                    <Accordion.Collapse eventKey='0' key={userId}>
-                        <Card.Body>
+                {users.map(user => (
+                    <Accordion.Collapse eventKey='0' key={user_id}>
+                        <Card.Body onClick={onClickHandler(user)}>
                             <RiRadioButtonLine
                                 className={`mb-1 ${
-                                    obj.online ? 'text-success' : 'text-secondary'
+                                    user.online ? 'text-success' : 'text-secondary'
                                 }`}
                                 size='0.8em'
                             />{' '}
-                            {obj.username}
+                            {user.name}
                         </Card.Body>
                     </Accordion.Collapse>
                 ))}

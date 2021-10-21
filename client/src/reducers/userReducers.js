@@ -2,6 +2,9 @@ import {
     GET_USER,
     GET_USER_FAIL,
     GET_USER_REQUEST,
+    GET_USERS, GET_USERS_BY_CHAT, GET_USERS_BY_CHAT_FAIL, GET_USERS_BY_CHAT_REQUEST,
+    GET_USERS_FAIL,
+    GET_USERS_REQUEST,
     LOGIN_NAME,
     LOGIN_NAME_REQUEST,
     LOGOUT_NAME,
@@ -46,3 +49,38 @@ export function userReducer(state = { user: {} }, action) {
             return state;
     }
 }
+
+export function usersReducer(state = { users: [] }, action) {
+    switch (action.type) {
+        case GET_USERS_REQUEST:
+            return {
+                loading: true
+            }
+        case GET_USERS:
+            return {
+                users: action.payload,
+            };
+        case GET_USERS_FAIL:
+            return { error: action.payload, loading: false }
+        default:
+            return state;
+    }
+}
+
+export function usersByChatReducer(state = { users: [] }, action) {
+    switch (action.type) {
+        case GET_USERS_BY_CHAT_REQUEST:
+            return {
+                loading: true
+            }
+        case GET_USERS_BY_CHAT:
+            return {
+                users: action.payload,
+            };
+        case GET_USERS_BY_CHAT_FAIL:
+            return { error: action.payload, loading: false }
+        default:
+            return state;
+    }
+}
+

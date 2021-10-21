@@ -2,28 +2,24 @@ import { useEffect, useRef, useState } from 'react'
 import io from 'socket.io-client'
 import {SERVER_URL} from "../constants/apiUrl";
 
-export const useChat = (roomId, user) => {
+export const useChat = (user, chat) => {
     const [messages, setMessages] = useState([])
     const socketRef = useRef(null)
 
     useEffect(() => {
-
         socketRef.current = io(SERVER_URL)
-
         socketRef.current.emit('message:get')
-
         socketRef.current.on('messages', (messages) => {
             const newMessages = messages.map((msg) =>
                 msg.name === user.name ? { ...msg, currentUser: true } : checkLiked(msg)
             )
-            console.log(messages)
             setMessages(newMessages)
         })
 
         return () => {
             socketRef.current.disconnect()
         }
-    }, [roomId, user])
+    }, [chat, user])
 
     const checkLiked = (msg) => {
         const existedLike = msg.likes.filter(like => user._id === like).length;
@@ -54,5 +50,9 @@ export const useChat = (roomId, user) => {
         socketRef.current.emit('message:like', data)
     }
 
-    return { user, messages, sendMessage, removeMessage, editMessage, toggleLike }
+    const selectChat = (id) => {
+        socketRef.current.emit('subscribe', id)
+    }
+
+    return { user, messages, sendMessage, removeMessage, editMessage, toggleLike, selectChat }
 }
