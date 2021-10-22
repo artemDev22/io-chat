@@ -11,4 +11,4 @@ export const subscribeHandler = (io: Server, socket: Socket) => {
             socket.leave(roomId);
         });
     });
-});
+}

@@ -22,7 +22,7 @@ export const UserList = ({ users, createChat }) => {
                     </Accordion.Toggle>
                 </Card.Header>
                 {users.map(user => (
-                    <Accordion.Collapse eventKey='0' key={user_id}>
+                    <Accordion.Collapse eventKey='0' key={user._id}>
                         <Card.Body onClick={onClickHandler(user)}>
                             <RiRadioButtonLine
                                 className={`mb-1 ${

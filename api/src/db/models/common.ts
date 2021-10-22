@@ -1,13 +1,10 @@
-import {Schema} from "mongoose";
+import {Schema, model} from "mongoose";
 
-export const CommonSchema = (params: any) => {
+export const CommonSchema = (newSchema: Schema, name: string) => {
     const schema = new Schema({
         created_at: {type: Date, default: Date.now()},
+        child: newSchema
     });
 
-    if (params) {
-        schema.add(params);
-    }
-
-    return schema;
+    return model(name, schema);
 };

@@ -1,9 +1,9 @@
-import {model} from "mongoose";
 import {CommonSchema} from "./common";
+import {Schema} from "mongoose";
 
-const UserSchema = CommonSchema({
+export const userSchema = new Schema({
     name: {type: String, required: true, unique: true},
     online: {type: Boolean, default: true},
-});
+})
 
-export const UserModel = model("User", UserSchema);
+export const UserModel = CommonSchema(userSchema, "User");

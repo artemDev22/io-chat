@@ -1,8 +1,8 @@
-import {model} from "mongoose";
+import {Schema} from "mongoose";
 import {CommonSchema} from "./common";
+const chatSchema = new Schema({
+    users: []
+})
+export const ChatModel = CommonSchema(chatSchema, "Chat");
 
-const ChatSchema = CommonSchema({
-    users: [],
-});
 
-export const ChatModel = model("Chat", ChatSchema);

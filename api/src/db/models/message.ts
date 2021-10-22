@@ -1,15 +1,13 @@
-import {model} from "mongoose";
 import {CommonSchema} from "./common";
-import {UserModel} from "./user";
-
-const MessageSchema = CommonSchema({
-    text: {type: String, required: true},
-    sender: UserModel,
+import {Schema} from "mongoose";
+import {userSchema} from "./user";
+const messageSchema = new Schema({
+    text: {type: String},
+    sender: userSchema,
     reply_message: {type: String, default: null},
     likes_count: { type: Number, default: 0 },
-    likes: Array,
+    likes: [],
     type: {type: String, required: true},
     chat_id: {type: String, required: true},
-});
-
-export const MessageModel = model("Message", MessageSchema);
+})
+export const MessageModel = CommonSchema(messageSchema, "Message");
